@@ -62,6 +62,19 @@ class WPCampusTweets extends WPCampusRequestElement {
 			text = text.replace(hashtagSearch, hashtagMarkup);
 		}
 
+		// Look for user mentions.
+		if (item.entities.user_mentions) {
+			for (let i = 0; i < item.entities.user_mentions.length; i++) {
+				const user = item.entities.user_mentions[i];
+				if (!user.screen_name) {
+					continue;
+				}
+				const fullScreenName = `@${user.screen_name}`;
+				const urlMarkup = `<a href="https://twitter.com/${user.screen_name}">${fullScreenName}</a>`;
+				text = text.replace(fullScreenName, urlMarkup);
+			}
+		}
+
 		// Replace URLs.
 		if (item.entities.urls) {
 			for (let i = 0; i < item.entities.urls.length; i++) {
