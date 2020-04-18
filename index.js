@@ -50,16 +50,18 @@ class WPCampusTweets extends WPCampusRequestElement {
 		}
 
 		// Look for hashtags.
-		const hashtags = ["WPCampus", "wordpress", "heweb", "HigherEd"];
-		for (let h = 0; h < hashtags.length; h++) {
-			const hashtag = hashtags[h];
-			const hashtagSearch = `#${hashtag}`;
-			if (!text.match(hashtagSearch)) {
-				continue;
+		if (item.entities.hashtags) {
+			//const allowedHashtags = ["WPCampus", "wordpress", "heweb", "HigherEd"];
+			for (let i = 0; i < item.entities.hashtags.length; i++) {
+				const hashtag = item.entities.hashtags[i];
+				if (!hashtag.text) {
+					continue;
+				}
+				const fullHashtag = `#${hashtag.text}`;
+				const hashtagURL = "https://twitter.com/search?q=" + hashtag.text.toLowerCase();
+				const hashtagMarkup = `<a href="${hashtagURL}">${fullHashtag}</a>`;
+				text = text.replace(fullHashtag, hashtagMarkup);
 			}
-			const hashtagURL = "https://twitter.com/search?q=" + hashtag.toLowerCase();
-			const hashtagMarkup = `<a href="${hashtagURL}">#${hashtag}</a>`;
-			text = text.replace(hashtagSearch, hashtagMarkup);
 		}
 
 		// Look for user mentions.
