@@ -36,17 +36,9 @@ class WPCampusTweets extends WPCampusRequestElement {
 
 		return format;
 	}
-	normalizeTweetText(item) {
-		let text = "";
-
-		if (item.full_text) {
-			text = item.full_text;
-		} else if (item.text) {
-			text = item.text;
-		}
-
-		if (!text) {
-			return "";
+	normalizeTweetEntities(item, text) {
+		if (!item.entities) {
+			return text;
 		}
 
 		// Look for hashtags.
@@ -76,6 +68,35 @@ class WPCampusTweets extends WPCampusRequestElement {
 				text = text.replace(fullScreenName, urlMarkup);
 			}
 		}
+
+		// Remove media URLs.
+		if (item.entities.media) {
+			for (let i = 0; i < item.entities.media.length; i++) {
+				const media = item.entities.media[i];
+				if (!media.url) {
+					continue;
+				}
+				text = text.replace(media.url, "");
+			}
+		}
+
+		return text;
+	}
+	normalizeTweetText(item) {
+		let text = "";
+
+		if (item.full_text) {
+			text = item.full_text;
+		} else if (item.text) {
+			text = item.text;
+		}
+
+		if (!text) {
+			return "";
+		}
+
+		// Take care of hashtags, user mentions, and media.
+		text = this.normalizeTweetEntities(item, text);
 
 		// Replace URLs.
 		if (item.entities.urls) {
