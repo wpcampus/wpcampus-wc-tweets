@@ -312,7 +312,6 @@ class WPCampusTweets extends WPCampusRequestElement {
 
 			that.isRendering(true);
 
-			that.setAttribute("aria-live", "polite");
 			that.setAttribute("aria-label", "Tweets");
 
 			that.loadContent().then(() => {
