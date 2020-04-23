@@ -312,7 +312,7 @@ class WPCampusTweets extends WPCampusRequestElement {
 
 			that.isRendering(true);
 
-			that.setAttribute("aria-label", "Tweets");
+			that.setAttribute("aria-label", "Most recent WPCampus tweet");
 
 			that.loadContent().then(() => {
 				that.isRendering(false);
