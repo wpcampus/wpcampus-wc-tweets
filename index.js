@@ -1,5 +1,5 @@
 const { WPCampusRequestElement } = require("@wpcampus/wpcampus-wc-default");
-const stylesheet = require("./index.css");
+require("./index.css");
 
 const loadingClass = "wpc-tweets--loading";
 const postsSelector = "wpc-tweets__tweets";
@@ -13,8 +13,6 @@ class WPCampusTweets extends WPCampusRequestElement {
 			requestURL: "https://wpcampus.org/wp-json/wpcampus/tweets"
 		};
 		super(config);
-
-		this.addStyles(stylesheet);
 	}
 	getTweetDateFormat(dateObj) {
 		const monthNames = ["January", "February", "March", "April", "May", "June",
